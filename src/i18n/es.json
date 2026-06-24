@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "products": "Productos",
+    "workshops": "Talleres",
+    "events": "Eventos",
+    "admin": "Panel",
+    "login": "Acceder",
+    "logout": "Salir",
+    "installApp": "Instalar App"
+  },
+  "hero": {
+    "title": "Cultivando un Futuro Sostenible, Juntos",
+    "subtitle": "Únete a nuestra plataforma comunitaria eco-consciente. Comparte cosechas orgánicas, aprende jardinería regenerativa en talleres prácticos y conéctate en eventos ambientales locales.",
+    "cta_products": "Ver Productos",
+    "cta_events": "Ver Eventos"
+  },
+  "categories": {
+    "all": "Todos",
+    "food": "Comida y Cosecha",
+    "lifestyle": "Estilo Eco",
+    "education": "Educación",
+    "garden": "Jardín y Suelo"
+  },
+  "buttons": {
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "add": "Añadir Nuevo",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "bookNow": "Reservar Ahora",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "register": "Registrarse",
+    "back": "Volver",
+    "save": "Guardar Cambios",
+    "updating": "Actualizando...",
+    "submitting": "Enviando..."
+  },
+  "forms": {
+    "name": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "date": "Fecha de la Reserva",
+    "tickets": "Número de Entradas",
+    "notes": "Peticiones especiales / Notas dietéticas",
+    "validationRequired": "Este campo es obligatorio",
+    "validationEmail": "Introduce un correo válido",
+    "validationDate": "La fecha debe ser en el futuro",
+    "successBooking": "¡Reserva realizada con éxito!",
+    "offlineSuccessBooking": "Modo sin conexión: Reserva guardada localmente. Se sincronizará automáticamente cuando vuelva la conexión."
+  },
+  "weather": {
+    "title": "Clima Local",
+    "loading": "Cargando pronóstico...",
+    "error": "Clima no disponible",
+    "desc": "Consulta el clima antes de asistir a eventos al aire libre."
+  },
+  "offline": {
+    "banner": "Modo Sin Conexión Activo",
+    "message": "Actualmente no tienes conexión. Mostrando datos almacenados en caché."
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "productsTab": "Productos y Talleres",
+    "eventsTab": "Eventos",
+    "bookingsTab": "Reservas",
+    "addNewItem": "Añadir Producto/Taller",
+    "addNewEvent": "Añadir Evento",
+    "actions": "Acciones",
+    "editItem": "Editar Artículo",
+    "editEvent": "Editar Evento"
+  },
+  "common": {
+    "price": "Precio",
+    "availability": "Disponibilidad",
+    "date": "Fecha",
+    "location": "Ubicación",
+    "attendees": "Asistentes",
+    "distance": "Proximidad",
+    "search": "Buscar...",
+    "free": "Gratis",
+    "capacity": "Capacidad",
+    "spotsLeft": "lugares libres"
+  }
+}

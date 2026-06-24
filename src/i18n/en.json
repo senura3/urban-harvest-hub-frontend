@@ -1,0 +1,85 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "workshops": "Workshops",
+    "events": "Events",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout",
+    "installApp": "Install App"
+  },
+  "hero": {
+    "title": "Cultivating a Sustainable Future, Together",
+    "subtitle": "Join our eco-conscious community platform. Share organic harvest, learn regenerative gardening at hands-on workshops, and connect in local environmental events.",
+    "cta_products": "Explore Products",
+    "cta_events": "Join Events"
+  },
+  "categories": {
+    "all": "All",
+    "food": "Food & Produce",
+    "lifestyle": "Eco Lifestyle",
+    "education": "Education",
+    "garden": "Garden & Soil"
+  },
+  "buttons": {
+    "filter": "Filter",
+    "sort": "Sort",
+    "add": "Add New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "bookNow": "Book Now",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "register": "Register",
+    "back": "Back",
+    "save": "Save Changes",
+    "updating": "Updating...",
+    "submitting": "Submitting..."
+  },
+  "forms": {
+    "name": "Full Name",
+    "email": "Email Address",
+    "date": "Preferred Date",
+    "tickets": "Number of Tickets",
+    "notes": "Special Requests / Dietary notes",
+    "validationRequired": "This field is required",
+    "validationEmail": "Please enter a valid email address",
+    "validationDate": "Date must be in the future",
+    "successBooking": "Booking submitted successfully!",
+    "offlineSuccessBooking": "Offline: Booking saved and will sync automatically when connection returns."
+  },
+  "weather": {
+    "title": "Local Weather",
+    "loading": "Fetching forecast...",
+    "error": "Weather unavailable",
+    "desc": "Check conditions before joining outdoor events."
+  },
+  "offline": {
+    "banner": "Offline Mode Active",
+    "message": "You are currently disconnected. The page is showing cached data."
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "productsTab": "Products / Workshops",
+    "eventsTab": "Events",
+    "bookingsTab": "Bookings",
+    "addNewItem": "Add Product/Workshop",
+    "addNewEvent": "Add Event",
+    "actions": "Actions",
+    "editItem": "Edit Item",
+    "editEvent": "Edit Event"
+  },
+  "common": {
+    "price": "Price",
+    "availability": "Availability",
+    "date": "Date",
+    "location": "Location",
+    "attendees": "Attendees",
+    "distance": "Proximity",
+    "search": "Search...",
+    "free": "Free",
+    "capacity": "Capacity",
+    "spotsLeft": "spots left"
+  }
+}

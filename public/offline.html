@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Urban Harvest Hub</title>
+  <style>
+    body {
+      background-color: #f9f6f0;
+      color: #292524;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 24px;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border: 1px solid #e7e5e4;
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+      background: #4a7c5915;
+      color: #4a7c59;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    h1 {
+      font-family: serif;
+      font-size: 24px;
+      margin: 0 0 12px;
+      color: #1c1917;
+    }
+    p {
+      font-size: 14px;
+      color: #57534e;
+      line-height: 1.6;
+      margin: 0 0 24px;
+    }
+    .btn {
+      display: inline-block;
+      background: #4a7c59;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #385e43;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2Z"/>
+      </svg>
+    </div>
+    <h1>You are Offline</h1>
+    <p>It looks like you've wandered into a quiet patch of the forest without internet. Check your connection or try returning to cached areas of our community hub.</p>
+    <a href="/" class="btn">Return Home</a>
+  </div>
+</body>
+</html>
