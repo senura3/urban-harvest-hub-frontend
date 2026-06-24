@@ -30,4 +30,5 @@ Thumbs.db
 
 # Optional: Uncomment the line below if you want to completely exclude the server folder 
 # from this repository because you are maintaining it in a separate repository.
-# server/
+server/
+
