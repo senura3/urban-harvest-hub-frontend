@@ -1,5 +1,8 @@
 # Urban Harvest Hub
 
+### 🔗 Live Deployment
+- **Frontend App (Vercel):** [https://urban-harvest-hub-frontend.vercel.app](https://urban-harvest-hub-frontend.vercel.app)
+
 Urban Harvest Hub is a full-stack, eco-conscious community web application designed for neighbors, urban growers, and sustainability advocates. The platform enables users to trade organic produce/gardening tools, coordinate and register for regenerative workshops (like composting and zero-waste cooking), and join local environmental events.
 
 This repository features both:
