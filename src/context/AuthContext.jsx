@@ -140,15 +140,27 @@ export const AuthProvider = ({ children }) => {
 
         let subscription = await registration.pushManager.getSubscription()
         if (subscription) {
-          // Already subscribed, send to backend to verify it's registered
-          await api.post('/auth/subscribe', subscription)
-          return
+          // Compare active subscription key with new VAPID key to handle server restarts
+          if (subscription.options && subscription.options.applicationServerKey) {
+            const currentKeyHex = Array.from(new Uint8Array(subscription.options.applicationServerKey))
+              .map(b => b.toString(16).padStart(2, '0')).join('')
+            const convertedKeyHex = Array.from(convertedVapidKey)
+              .map(b => b.toString(16).padStart(2, '0')).join('')
+
+            if (currentKeyHex !== convertedKeyHex) {
+              console.log("VAPID key mismatched (possibly server restarted). Re-subscribing...")
+              await subscription.unsubscribe()
+              subscription = null
+            }
+          }
         }
 
-        subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: convertedVapidKey
-        })
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertedVapidKey
+          })
+        }
 
         await api.post('/auth/subscribe', subscription)
         console.log("Successfully subscribed to Push Notifications!")
