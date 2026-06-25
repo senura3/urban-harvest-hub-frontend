@@ -8,11 +8,11 @@ import LoadingSpinner from '../components/LoadingSpinner'
 import { Plus, Edit2, Trash2, X, PlusCircle, Calendar, Layers, ShieldAlert, Check, Ban } from 'lucide-react'
 
 export const Admin = () => {
-  const { user, loading: authLoading } = useAuth()
+  const { user, loading: authLoading, subscribeUserToPush } = useAuth()
   const { t } = useLang()
   const navigate = useNavigate()
 
-  // Tab State: 'items' | 'events' | 'bookings'
+  // Tab State: 'items' | 'events' | 'bookings' | 'notifications'
   const [activeTab, setActiveTab] = useState('items')
   
   // Data States
@@ -20,6 +20,14 @@ export const Admin = () => {
   const [events, setEvents] = useState([])
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
+
+  // Notification Test States
+  const [testPushForm, setTestPushForm] = useState({
+    title: 'Urban Harvest Hub',
+    body: 'Hello from the Urban Harvest community! Tap to check upcoming events.',
+    url: '/events'
+  })
+  const [isSendingPush, setIsSendingPush] = useState(false)
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -322,6 +330,16 @@ export const Admin = () => {
         >
           {t('admin.bookingsTab')}
         </button>
+        <button
+          onClick={() => setActiveTab('notifications')}
+          className={`px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors ${
+            activeTab === 'notifications'
+              ? 'border-harvest text-harvest dark:border-earthen dark:text-earthen'
+              : 'border-transparent text-stone-500 hover:text-stone-750'
+          }`}
+        >
+          Test Notifications
+        </button>
       </div>
 
       {/* Tab Contents */}
@@ -465,6 +483,166 @@ export const Admin = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {activeTab === 'notifications' && (
+          <div className="p-6 md:p-8 space-y-8 animate-fadeIn">
+            <div className="max-w-2xl">
+              <h3 className="text-xl font-bold text-stone-900 dark:text-white mb-2">Push Notification Testing Suite</h3>
+              <p className="text-sm text-stone-500">
+                Verify and debug push notification delivery on this client, trigger local testing notifications, or broadcast a web-push notification to all registered subscription endpoints.
+              </p>
+            </div>
+
+            {/* Diagnostic Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* Client Diagnostic Card */}
+              <div className="bg-stone-50 dark:bg-stone-950 p-6 rounded-2xl border border-stone-100 dark:border-stone-850 space-y-4">
+                <h4 className="font-bold text-stone-850 dark:text-white text-sm flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-harvest animate-pulse"></span>
+                  <span>Local Client Status</span>
+                </h4>
+                
+                <div className="space-y-3 text-xs">
+                  <div className="flex justify-between border-b border-stone-150/40 dark:border-stone-800 pb-2">
+                    <span className="text-stone-500">Push Manager Supported:</span>
+                    <span className="font-semibold text-stone-700 dark:text-stone-300">{'PushManager' in window ? 'Yes ✅' : 'No ❌'}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-stone-150/40 dark:border-stone-800 pb-2">
+                    <span className="text-stone-500">Service Worker Active:</span>
+                    <span className="font-semibold text-stone-700 dark:text-stone-300">{'serviceWorker' in navigator ? 'Yes ✅' : 'No ❌'}</span>
+                  </div>
+                  <div className="flex justify-between border-b border-stone-150/40 dark:border-stone-800 pb-2">
+                    <span className="text-stone-500">Notification Permission:</span>
+                    <span className="font-semibold capitalize text-stone-700 dark:text-stone-300">{Notification.permission}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    onClick={async () => {
+                      if (subscribeUserToPush) {
+                        await subscribeUserToPush();
+                        alert("Re-triggered push subscription process! Check browser console logs.");
+                      }
+                    }}
+                    className="w-full btn-secondary text-xs py-2 font-bold"
+                  >
+                    Subscribe / Check Permission
+                  </button>
+                </div>
+              </div>
+
+              {/* Local Notification Trigger */}
+              <div className="bg-stone-50 dark:bg-stone-950 p-6 rounded-2xl border border-stone-100 dark:border-stone-850 space-y-4">
+                <h4 className="font-bold text-stone-850 dark:text-white text-sm flex items-center gap-2">
+                  <span>Immediate Local Notification</span>
+                </h4>
+                <p className="text-xs text-stone-500 leading-relaxed">
+                  Trigger an immediate notification directly within this browser window. Excellent for verifying sound, vibration, and display formats locally without sending backend API payloads.
+                </p>
+
+                <div className="pt-2">
+                  <button
+                    onClick={() => {
+                      if (!("Notification" in window)) {
+                        alert("This browser does not support desktop notifications.");
+                        return;
+                      }
+                      
+                      if (Notification.permission === "granted") {
+                        new Notification("Urban Harvest Local Test", {
+                          body: "Great job! Local notifications are fully active and working.",
+                          icon: "/icons/icon-192.svg"
+                        });
+                      } else if (Notification.permission !== "denied") {
+                        Notification.requestPermission().then((permission) => {
+                          if (permission === "granted") {
+                            new Notification("Urban Harvest Local Test", {
+                              body: "Great job! Local notifications are fully active and working.",
+                              icon: "/icons/icon-192.svg"
+                            });
+                          }
+                        });
+                      } else {
+                        alert("Notification permission is currently blocked. Please reset site permissions in your browser address bar.");
+                      }
+                    }}
+                    className="w-full btn-secondary text-xs py-2 font-bold"
+                  >
+                    Trigger Local Test Notification
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Broadcast Form Panel */}
+            <div className="bg-stone-50 dark:bg-stone-950 p-6 md:p-8 rounded-3xl border border-stone-100 dark:border-stone-850 space-y-6">
+              <div className="border-b border-stone-150/40 dark:border-stone-800 pb-3">
+                <h4 className="font-bold text-stone-900 dark:text-white text-base">Broadcast Web-Push Notification</h4>
+                <p className="text-xs text-stone-500 mt-0.5">Send a real VAPID-encrypted push payload from the backend to all registered device endpoints.</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Notification Title</label>
+                  <input
+                    type="text"
+                    value={testPushForm.title}
+                    onChange={(e) => setTestPushForm({ ...testPushForm, title: e.target.value })}
+                    className="input-field py-2 text-sm text-stone-850 dark:text-white bg-white dark:bg-stone-900"
+                    placeholder="Enter title..."
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Action Redirect URL</label>
+                  <input
+                    type="text"
+                    value={testPushForm.url}
+                    onChange={(e) => setTestPushForm({ ...testPushForm, url: e.target.value })}
+                    className="input-field py-2 text-sm text-stone-850 dark:text-white bg-white dark:bg-stone-900"
+                    placeholder="/workshops"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Message Body</label>
+                <textarea
+                  value={testPushForm.body}
+                  onChange={(e) => setTestPushForm({ ...testPushForm, body: e.target.value })}
+                  className="input-field py-2 text-sm resize-none text-stone-850 dark:text-white bg-white dark:bg-stone-900"
+                  rows="3"
+                  placeholder="Enter message text..."
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    setIsSendingPush(true);
+                    try {
+                      const res = await api.post('/auth/broadcast-test', testPushForm);
+                      alert(res.data.message || "Push notification broadcast completed successfully!");
+                    } catch (err) {
+                      console.error(err);
+                      alert("Failed to broadcast push notification: " + (err.response?.data?.message || err.message));
+                    } finally {
+                      setIsSendingPush(false);
+                    }
+                  }}
+                  disabled={isSendingPush}
+                  className="btn-primary py-2.5 px-6 font-bold flex items-center justify-center gap-2"
+                >
+                  <span>{isSendingPush ? 'Broadcasting...' : 'Broadcast Push Notification'}</span>
+                </button>
+              </div>
+            </div>
+
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
+import api from './api/api'
 import { useLang } from './context/LanguageContext'
 import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/Navbar'
@@ -50,8 +51,16 @@ export const App = () => {
     const queue = JSON.parse(localStorage.getItem('offline-bookings') || '[]')
     if (queue.length === 0) return
 
+    const token = localStorage.getItem('token')
+    const isMockToken = token && token.startsWith('mock-')
+    if (isMockToken) {
+      console.log("Mock token active. Simulated bookings kept locally.")
+      return
+    }
+
     console.log(`Connection restored. Syncing ${queue.length} offline bookings...`)
     
+    const remainingQueue = []
     for (const booking of queue) {
       try {
         await api.post('/bookings', {
@@ -65,12 +74,20 @@ export const App = () => {
         })
       } catch (err) {
         console.error("Failed to sync offline booking:", booking, err)
+        // Keep in queue if it is a network error (server still down)
+        if (!err.response) {
+          remainingQueue.push(booking)
+        }
       }
     }
     
-    // Clear queue
-    localStorage.removeItem('offline-bookings')
-    console.log("Offline booking queue synced and cleared successfully.")
+    if (remainingQueue.length > 0) {
+      localStorage.setItem('offline-bookings', JSON.stringify(remainingQueue))
+      console.log(`Some bookings failed to sync (server unreachable). Retaining ${remainingQueue.length} items in queue.`)
+    } else {
+      localStorage.removeItem('offline-bookings')
+      console.log("Offline booking queue synced and cleared successfully.")
+    }
   }
 
   return (

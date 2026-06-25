@@ -71,14 +71,17 @@ export const Book = () => {
         notes: formData.notes
       }
 
-      if (!navigator.onLine) {
-        // PWA Offline mode: Queue booking in localStorage
+      const token = localStorage.getItem('token')
+      const isMockToken = token && token.startsWith('mock-')
+
+      if (!navigator.onLine || isMockToken) {
+        // PWA Offline mode or mock mode: Queue booking in localStorage
         const offlineQueue = JSON.parse(localStorage.getItem('offline-bookings') || '[]')
         offlineQueue.push(payload)
         localStorage.setItem('offline-bookings', JSON.stringify(offlineQueue))
         
-        // Trigger Service Worker Sync if available
-        if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        // Trigger Service Worker Sync if available (skip for mock token sync to avoid spamming backend)
+        if (!isMockToken && 'serviceWorker' in navigator && 'SyncManager' in window) {
           const registration = await navigator.serviceWorker.ready
           try {
             await registration.sync.register('sync-bookings')
@@ -91,16 +94,29 @@ export const Book = () => {
         setBookingSuccess(true)
       } else {
         // Online: post to express backend
-        await api.post('/bookings', {
-          itemId: id,
-          itemType: type === 'product' ? 'Item' : type === 'workshop' ? 'Item' : 'Event',
-          date: formData.date,
-          tickets: formData.tickets,
-          notes: formData.notes,
-          name: formData.name,
-          email: formData.email
-        })
-        setBookingSuccess(true)
+        try {
+          await api.post('/bookings', {
+            itemId: id,
+            itemType: type === 'product' ? 'Item' : type === 'workshop' ? 'Item' : 'Event',
+            date: formData.date,
+            tickets: formData.tickets,
+            notes: formData.notes,
+            name: formData.name,
+            email: formData.email
+          })
+          setBookingSuccess(true)
+        } catch (err) {
+          // If backend server is down/unreachable, fall back to queuing locally
+          if (!err.response) {
+            console.warn("Backend server is unreachable. Saving booking locally.")
+            const offlineQueue = JSON.parse(localStorage.getItem('offline-bookings') || '[]')
+            offlineQueue.push(payload)
+            localStorage.setItem('offline-bookings', JSON.stringify(offlineQueue))
+            setBookingSuccess(true)
+          } else {
+            throw err
+          }
+        }
       }
     } catch (err) {
       console.error(err)
